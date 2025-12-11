@@ -4,9 +4,9 @@ import Header from './Header';
 
 const MainLayout: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen w-full bg-gray-100 dark:bg-gray-900">
       <Header />
-      <main className="pt-16 pb-6 max-w-7xl mx-auto flex justify-center" style={{ display: 'flex', justifyContent: 'center' }}>
+      <main className="pt-16 pb-6 w-full">
         <Outlet />
       </main>
     </div>

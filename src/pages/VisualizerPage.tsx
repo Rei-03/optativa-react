@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useAlgorithmStore } from '../stores';
 import { useUrlStateSync } from '../hooks/useUrlStateSync';
+import UserDataForm from '../components/UserDataForm';
 
 const VisualizerPage: React.FC = () => {
   const {
@@ -12,12 +13,15 @@ const VisualizerPage: React.FC = () => {
     currentStep,
     comparisons,
     swaps,
+    isPlaying,
     generateData,
     setAlgorithm,
+    setSpeed,
     runAlgorithm,
     stepForward,
     stepBackward,
-    reset
+    reset,
+    playPause
   } = useAlgorithmStore();
 
   // Usar sincronización URL
@@ -30,8 +34,26 @@ const VisualizerPage: React.FC = () => {
     }
   }, [data.length, generateData]);
 
+  // Efecto para reproducción automática
+  useEffect(() => {
+    let interval: number;
+    if (isPlaying && steps.length > 0 && currentStep < steps.length - 1) {
+      interval = setInterval(() => {
+        stepForward();
+      }, 500 / speed); // Intervalo basado en velocidad
+    } else if (isPlaying && currentStep >= steps.length - 1) {
+      // Detener reproducción al llegar al final
+      playPause();
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isPlaying, currentStep, steps.length, speed, stepForward, playPause]);
+
   return (
-    <div className="max-w-6xl mx-auto p-6 text-white">
+    <div className="w-full p-6 text-white">
+
+      <UserDataForm />
 
       <div className="mb-4">
         <label className="block mb-2 text-gray-300">Algoritmo:</label>
@@ -54,7 +76,7 @@ const VisualizerPage: React.FC = () => {
           max="5"
           step="0.1"
           value={speed}
-          onChange={(e) => useAlgorithmStore.setState({ speed: parseFloat(e.target.value) })}
+          onInput={(e) => setSpeed(parseFloat((e.target as HTMLInputElement).value))}
           className="w-full"
         />
       </div>
@@ -88,6 +110,9 @@ const VisualizerPage: React.FC = () => {
       {steps.length > 0 && (
         <div className="mb-4">
           <div className="flex gap-2 mb-2">
+            <button onClick={playPause} className="bg-green-500 text-white px-3 py-1 rounded">
+              {isPlaying ? 'Pausar' : 'Reproducir'}
+            </button>
             <button onClick={stepBackward} className="bg-gray-500 text-white px-3 py-1 rounded">
               Anterior
             </button>

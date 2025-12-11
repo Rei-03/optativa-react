@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { persist, devtools, subscribeWithSelector } from 'zustand/middleware';
+import { persist, devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
-import type { AlgorithmState, AlgorithmStep, ExecutionHistory } from '../types/algorithm.types';
+import type { AlgorithmState, ExecutionHistory } from '../types/algorithm.types';
 import { bubbleSort } from '../algorithms';
 
 export const useAlgorithmStore = create<AlgorithmState>()(
@@ -36,6 +36,16 @@ export const useAlgorithmStore = create<AlgorithmState>()(
             state.currentStep = 0;
             state.comparisons = 0;
             state.swaps = 0;
+          }),
+
+        setData: (data: number[]) =>
+          set((state) => {
+            state.data = [...data];
+            state.currentStep = 0;
+            state.comparisons = 0;
+            state.swaps = 0;
+            state.steps = [];
+            state.isPlaying = false;
           }),
 
         setSpeed: (speed: number) =>

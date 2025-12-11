@@ -42,6 +42,7 @@ export interface AlgorithmState {
   // Actions
   setAlgorithm: (algo: string) => void;
   generateData: (size: number) => void;
+  setData: (data: number[]) => void;
   setSpeed: (speed: number) => void;
   playPause: () => void;
   stepForward: () => void;

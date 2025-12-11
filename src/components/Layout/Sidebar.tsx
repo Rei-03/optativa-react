@@ -5,7 +5,7 @@ import { useUIStore } from '../../stores';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
-  const { sidebarOpen, toggleSidebar } = useUIStore();
+  const { toggleSidebar } = useUIStore();
 
   const navItems = [
     { path: '/home', label: 'Inicio', icon: <Home size={20} /> },
