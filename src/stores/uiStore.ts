@@ -8,7 +8,7 @@ export const useUIStore = create<UIState>()(
     persist(
       immer((set) => ({
         // Estado inicial
-        theme: 'light',
+        theme: 'dark',
         language: 'es',
         sidebarOpen: true,
 

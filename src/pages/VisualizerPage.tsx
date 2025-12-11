@@ -8,7 +8,6 @@ const VisualizerPage: React.FC = () => {
   const {
     currentAlgorithm,
     data,
-    speed,
     steps,
     currentStep,
     comparisons,
@@ -16,7 +15,6 @@ const VisualizerPage: React.FC = () => {
     isPlaying,
     generateData,
     setAlgorithm,
-    setSpeed,
     runAlgorithm,
     stepForward,
     stepBackward,
@@ -40,7 +38,7 @@ const VisualizerPage: React.FC = () => {
     if (isPlaying && steps.length > 0 && currentStep < steps.length - 1) {
       interval = setInterval(() => {
         stepForward();
-      }, 500 / speed); // Intervalo basado en velocidad
+      }, 500); // Intervalo fijo
     } else if (isPlaying && currentStep >= steps.length - 1) {
       // Detener reproducción al llegar al final
       playPause();
@@ -48,7 +46,7 @@ const VisualizerPage: React.FC = () => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isPlaying, currentStep, steps.length, speed, stepForward, playPause]);
+  }, [isPlaying, currentStep, steps.length, stepForward, playPause]);
 
   return (
     <div className="w-full p-6 text-white">
@@ -68,18 +66,6 @@ const VisualizerPage: React.FC = () => {
         </select>
       </div>
 
-      <div className="mb-4">
-        <label className="block mb-2">Velocidad: {speed}x</label>
-        <input
-          type="range"
-          min="0.1"
-          max="5"
-          step="0.1"
-          value={speed}
-          onInput={(e) => setSpeed(parseFloat((e.target as HTMLInputElement).value))}
-          className="w-full"
-        />
-      </div>
 
       <div className="mb-4">
         <button
